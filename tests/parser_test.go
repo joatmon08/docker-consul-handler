@@ -1,9 +1,10 @@
 package tests
 
 import (
-	"github.com/joatmon08/consul-handler/lib"
 	"io/ioutil"
 	"testing"
+
+	"github.com/joatmon08/docker-consul-handler/lib"
 )
 
 func readFixture(filename string) ([]byte, error) {

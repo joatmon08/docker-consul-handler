@@ -4,9 +4,9 @@ import (
 	"bufio"
 	"flag"
 	"fmt"
-	"github.com/joatmon08/consul-handler/lib"
 	"os"
-	"strings"
+
+	"github.com/joatmon08/docker-consul-handler/lib"
 )
 
 func main() {
@@ -21,17 +21,15 @@ func main() {
 	scanner := bufio.NewScanner(os.Stdin)
 	scanner.Split(bufio.ScanWords)
 
-	existingNetworkIDs := []string{}
-
 	for scanner.Scan() {
 		input := scanner.Bytes()
-		networkIDs, _ := lib.ParseNetworkIDs(input)
-		newNetworks := lib.CompareNetworks(existingNetworkIDs, networkIDs)
-		stringNetworkIDs := strings.Join(newNetworks, " ")
-		if _, err = f.WriteString(stringNetworkIDs + "\n"); err != nil {
+		network, err := lib.GetNewestNetwork(input)
+		if err != nil {
 			panic(err)
 		}
-		existingNetworkIDs = networkIDs
+		if _, err = f.WriteString(network + "\n"); err != nil {
+			panic(err)
+		}
 	}
 
 	if err := scanner.Err(); err != nil {

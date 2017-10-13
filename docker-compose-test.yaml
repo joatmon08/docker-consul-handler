@@ -1,9 +1,0 @@
----
-version: '2'
-services:
-  handler:
-    image: consul-handler:latest
-    ports:
-      - 8500:8500
-    environment:
-      - CONSUL_HANDLER_RUNNER=http://192.168.205.1:8080

@@ -19,8 +19,8 @@ func addToConsulDockerNetworkKey(networkID string) error {
 	return nil
 }
 
-func TestShouldAddTwoNetworks(t *testing.T) {
-	if err := addToConsulDockerNetworkKey("newest"); err != nil {
+func TestMockAddaDockerNetworktoConsul(t *testing.T) {
+	if err := addToConsulDockerNetworkKey("wow"); err != nil {
 		t.Errorf("%s", err.Error())
 	}
 }

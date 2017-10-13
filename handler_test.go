@@ -23,7 +23,4 @@ func TestShouldAddTwoNetworks(t *testing.T) {
 	if err := addToConsulDockerNetworkKey("newest"); err != nil {
 		t.Errorf("%s", err.Error())
 	}
-	if err := addToConsulDockerNetworkKey("newer"); err != nil {
-		t.Errorf("%s", err.Error())
-	}
 }

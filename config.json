@@ -1,9 +1,0 @@
-{
-  "watches": [
-    {
-        "type": "keyprefix",
-        "prefix": "docker/network/v1.0/endpoint",
-        "handler": "/opt/consul/config/handler"
-    }
-  ]
-}

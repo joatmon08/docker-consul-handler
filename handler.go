@@ -28,6 +28,7 @@ func main() {
 				panic(err)
 			}
 			play_body := []byte(fmt.Sprintf("{\"container_network\": \"%s\"}", network))
+			fmt.Printf("Body %s", play_body)
 			if _, err = runner_client.Play(play_body); err != nil {
 				fmt.Printf("Network %s not created", network)
 			}

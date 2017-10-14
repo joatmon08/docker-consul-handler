@@ -28,6 +28,7 @@ func main() {
 		}
 		if len(networkID) == 0 {
 			network, err := lib.GetNetworkDetails(networkID)
+			fmt.Printf("Network %s", network)
 			if err != nil {
 				fmt.Printf("Cannot find network with ID %s", networkID)
 				continue

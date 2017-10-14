@@ -7,27 +7,15 @@ import (
 	"github.com/docker/docker/client"
 )
 
-// Network is a struct
-type Network struct {
-	ID   string
-	Name string
-}
-
-func GetNetworkDetails() ([]Network, error) {
+func GetNetworkDetails(networkID string) (string, error) {
 	cli, err := client.NewEnvClient()
 	if err != nil {
-		return nil, err
+		return "", err
 	}
-
-	networks, err := cli.NetworkList(context.Background(), types.NetworkListOptions{})
+	network, err := cli.NetworkInspect(context.Background(), networkID, types.NetworkInspectOptions{})
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 
-	var network_details []Network
-	for _, network := range networks {
-		network_details = append(network_details, Network{ID: network.ID, Name: network.Name})
-	}
-
-	return network_details, nil
+	return network.Name, nil
 }

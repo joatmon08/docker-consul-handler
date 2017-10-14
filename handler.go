@@ -22,10 +22,15 @@ func main() {
 
 	for scanner.Scan() {
 		input := scanner.Bytes()
-		network, err := lib.GetNewestNetwork(input)
-		if len(network) > 0 {
+		networkID, err := lib.GetNewestNetwork(input)
+		if err != nil {
+			panic(err)
+		}
+		if len(networkID) == 0 {
+			network, err := lib.GetNetworkDetails(networkID)
 			if err != nil {
-				panic(err)
+				fmt.Printf("Cannot find network with ID %s", networkID)
+				continue
 			}
 			play_body := []byte(fmt.Sprintf("{\"container_network\": \"%s\"}", network))
 			fmt.Printf("Body %s", play_body)

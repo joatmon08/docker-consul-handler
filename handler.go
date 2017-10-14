@@ -24,17 +24,18 @@ func main() {
 		input := scanner.Bytes()
 		networkID, err := lib.GetNewestNetwork(input)
 		if err != nil {
-			panic(err)
+			fmt.Println(err.Error())
+			continue
 		}
-		if len(networkID) == 0 {
+		fmt.Printf("Newest Network: %s \n", networkID)
+		if len(networkID) > 0 {
 			network, err := lib.GetNetworkDetails(networkID)
-			fmt.Printf("Network %s", network)
 			if err != nil {
-				fmt.Printf("Cannot find network with ID %s", networkID)
+				fmt.Println(err.Error())
 				continue
 			}
+			fmt.Printf("Network ID %s, Network Name: %s \n", networkID, network)
 			play_body := []byte(fmt.Sprintf("{\"container_network\": \"%s\"}", network))
-			fmt.Printf("Body %s", play_body)
 			if _, err = runner_client.Play(play_body); err != nil {
 				fmt.Printf("Network %s not created", network)
 			}

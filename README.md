@@ -7,9 +7,9 @@ Consul handlers.
 keyprefix. See config.json for an example.
 1. Create a Docker network on the host.
 1. The handler receives a keyprefix output from Consul in the format:
-  ```
-  [{"Key":"docker/network/v1.0/endpoint/264cc0919c0041156f5273c8e12d1a0541663c3372506b9c5397059acf4ee10a/","CreateIndex":12,"ModifyIndex":12,"LockIndex":0,"Flags":3304740253564472344,"Value":null,"Session":""}]
-  ```
+    ```
+    [{"Key":"docker/network/v1.0/endpoint/264cc0919c0041156f5273c8e12d1a0541663c3372506b9c5397059acf4ee10a/","CreateIndex":12,"ModifyIndex":12,"LockIndex":0,"Flags":3304740253564472344,"Value":null,"Session":""}]
+    ```
 1. The handler examines the ModifyIndex for the newly modified network.
 1. It parses out the Docker network ID from the Key and retrieves the network's
 name from Docker.

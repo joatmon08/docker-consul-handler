@@ -34,6 +34,9 @@ func main() {
 				fmt.Println(err.Error())
 				continue
 			}
+			if network == "bridge" {
+				continue
+			}
 			fmt.Printf("Network ID %s, Network Name: %s \n", networkID, network)
 			play_body := []byte(fmt.Sprintf("{\"container_network\": \"%s\"}", network))
 			if _, err = runner_client.Play(play_body); err != nil {

@@ -3,16 +3,16 @@ package lib
 import (
 	"context"
 
-	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/client"
+	"github.com/moby/moby/client"
 )
 
+// GetNetworkDetails retrieves network information from Docker networks
 func GetNetworkDetails(networkID string) (string, error) {
 	cli, err := client.NewEnvClient()
 	if err != nil {
 		return "", err
 	}
-	network, err := cli.NetworkInspect(context.Background(), networkID, types.NetworkInspectOptions{})
+	network, err := cli.NetworkInspect(context.Background(), networkID)
 	if err != nil {
 		return "", err
 	}

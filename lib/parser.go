@@ -8,7 +8,7 @@ import (
 
 type entry struct {
 	Key         string `json:"Key"`
-	ModifyIndex int    `json:"ModifyIndex"`
+	CreateIndex int    `json:"CreateIndex"`
 }
 
 func convertDataToConsulEntry(data []byte) ([]entry, error) {
@@ -19,11 +19,11 @@ func convertDataToConsulEntry(data []byte) ([]entry, error) {
 	return entries, nil
 }
 
-func sortByModifyIndex(entry_list *[]entry) {
+func sortByCreateIndex(entryList *[]entry) {
 	var entries []entry
-	entries = *entry_list
+	entries = *entryList
 	sort.Slice(entries, func(i, j int) bool {
-		return entries[i].ModifyIndex > entries[j].ModifyIndex
+		return entries[i].CreateIndex > entries[j].CreateIndex
 	})
 }
 
@@ -35,15 +35,29 @@ func extractNetworkID(e entry) string {
 	return ""
 }
 
-func GetNewestNetwork(data []byte) (string, error) {
+// Network is a structure of ID and its CreateIndex.
+type Network struct {
+	ID          string
+	CreateIndex int
+}
+
+// HasNewNetwork sets the newest network. It ignore modifications
+// or blank networks.
+func (n *Network) HasNewNetwork(data []byte) (bool, error) {
+	isNewNetwork := false
 	entries, err := convertDataToConsulEntry(data)
 	if err != nil {
-		return "", err
+		return isNewNetwork, err
 	}
 	if len(entries) == 0 {
-		return "", nil
+		return isNewNetwork, nil
 	}
-	sortByModifyIndex(&entries)
+	sortByCreateIndex(&entries)
 	entry := extractNetworkID(entries[0])
-	return entry, nil
+	if (entries[0].CreateIndex != n.CreateIndex) && (entry != "") {
+		n.ID = entry
+		n.CreateIndex = entries[0].CreateIndex
+		return true, nil
+	}
+	return isNewNetwork, nil
 }

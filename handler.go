@@ -20,13 +20,16 @@ func main() {
 
 	runner_client := runner.Client{URL: ansible_runner}
 
+	network := &lib.Network{}
+
 	for scanner.Scan() {
 		input := scanner.Bytes()
-		networkID, err := lib.GetNewestNetwork(input)
-		if err != nil {
+		isNew, err := network.HasNewNetwork(input)
+		if (err != nil) || (!isNew) {
 			fmt.Println(err.Error())
 			continue
 		}
+		networkID := network.ID
 		fmt.Printf("Newest Network: %s \n", networkID)
 		if len(networkID) > 0 {
 			network, err := lib.GetNetworkDetails(networkID)

@@ -1,4 +1,4 @@
-package tests
+package runner
 
 import (
 	"fmt"
@@ -6,18 +6,16 @@ import (
 	"net/http/httptest"
 	"strings"
 	"testing"
-
-	"github.com/joatmon08/docker-consul-handler/runner"
 )
 
-func TestShouldReturnSuccess(t *testing.T) {
+func TestRunnerShouldSucceed(t *testing.T) {
 	response := string("{\"playbook_return_code\": 0}")
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, response)
 	}))
 	defer ts.Close()
 
-	client := runner.Client{
+	client := Client{
 		URL: ts.URL,
 	}
 
@@ -33,14 +31,14 @@ func TestShouldReturnSuccess(t *testing.T) {
 
 }
 
-func TestShouldFail(t *testing.T) {
+func TestRunnerShouldFailWithPlaybookError(t *testing.T) {
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte("{\"message\": \"ansible playbook returned error code 2\"}"))
 	}))
 	defer ts.Close()
 
-	client := runner.Client{
+	client := Client{
 		URL: ts.URL,
 	}
 

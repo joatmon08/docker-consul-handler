@@ -8,14 +8,17 @@ import (
 	"net/http"
 )
 
-const PATH_PLAY = "/runner/play"
+// PathPlay denotes the path to run the playbook on the runner.
+const PathPlay = "/runner/play"
 
+// Client is the runner's client interface.
 type Client struct {
 	URL string
 }
 
+// Play runs the playbook.
 func (r Client) Play(extraVars []byte) ([]byte, error) {
-	url := r.URL + PATH_PLAY
+	url := r.URL + PathPlay
 	request := bytes.NewReader(extraVars)
 	req, err := http.NewRequest("POST", url, request)
 	req.Header.Add("Content-Type", "application/json")
@@ -33,8 +36,8 @@ func (r Client) Play(extraVars []byte) ([]byte, error) {
 		return nil, err
 	}
 	if resp.StatusCode > 399 {
-		err_message := fmt.Sprintf("Request failed with status code %s and body %s", resp.StatusCode, body)
-		return nil, errors.New(err_message)
+		errMessage := fmt.Sprintf("Request failed with status code %d and body %s", resp.StatusCode, body)
+		return nil, errors.New(errMessage)
 	}
 	return body, nil
 }

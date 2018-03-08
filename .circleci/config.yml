@@ -78,6 +78,8 @@ workflows:
     jobs:
       - test-unit
       - test-contract:
-          requires: test-unit
+          requires:
+            - test-unit
       - build:
-          requires: test-contract
+          requires:
+            - test-contract
